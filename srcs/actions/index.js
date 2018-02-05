@@ -146,11 +146,16 @@ const startChatting = function (dispatch) {
 	FCM.getFCMToken()
 		.then(token => {
 			console.log(token)
+			firebase.database()
+					.ref(`users/${DeviceInfo.getUniqueID()}`)
+					.update({
+						pushToken: token
+					});
 		});
 	FCM.subscribeToTopic('secret-chatroom');
 
 	FCM.on(FCMEvent.Notification, async (notif) => {
-		console.log(notif);
+		//console.log(notif);
 
 		if (notif && notif.local_notification) {
 			return
